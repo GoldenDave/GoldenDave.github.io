@@ -1,0 +1,93 @@
+<HTML>
+
+<head>
+  <title>Token Request Generator</title>
+  <!--link rel="stylesheet" href="inc/bootstrap.min.css" /-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="inc/bootstrap.min.css">
+  <script src="inc/jquery.min.js"></script>
+  <script src="inc/bootstrap.min.js"></script>
+  <script>
+    function start() {
+
+      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+      if (typeof web3 !== 'undefined') {
+        // Use Mist/MetaMask's provider
+        web3js = new Web3(web3.currentProvider);
+        return true;
+      } else {
+        $("#balance").val('No web3. Try using MetaMask!')
+        console.log('No web3? You should consider trying MetaMask!')
+        $("#mm").show();
+        return false;
+        // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+        web3js = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io"));
+      }
+
+      // Now you can start your app & access web3 freely:
+      //startApp()
+
+    }
+
+
+
+    function getBalance() {
+      if (!start()) return;
+      var addr = $("#address").val();
+      var tokenAddress = "0xeAb43193CF0623073Ca89DB9B712796356FA7414";
+      var tknAddress = (addr).substring(2);
+      var contractData = ('0x70a08231000000000000000000000000' + tknAddress);
+      web3.eth.call({
+        to: tokenAddress, // Contract address, used call the token balance of the address in question
+        data: contractData // Combination of contractData and tknAddress, required to call the balance of an address 
+      }, function (err, result) {
+        if (result) {
+          //var tokens = web3.utils.toBN(result).toString(); // Convert the result to a usable number string
+          //console.log('Tokens Owned: ' + web3.utils.fromWei(tokens, 'ether')); // Change the string to be in Ether not Wei, and show it in the console
+          $("#balance").val(web3.fromWei(result))
+          console.log(web3.fromWei(result))
+        }
+        else {
+          console.log(err); // Dump errors here
+        }
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <br/>
+  <br/>
+  <div class="col-md-4 col-md-offset-4">
+    <div class="row">
+      <div class="row">
+          <img src="images/download-metamask-dark.png" class="img-thumbnail" id="mm"  alt="Metamask" style="display:none;">
+      </div>
+      
+        <div class="row">
+          <div class="col-md-9">
+            <div class="form-group">
+              <label>Address</label>
+              <input class="form-control" name="address" id="address" width=50></input>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <label>&nbsp;</label>
+            <button id="selToken" class="btn btn-primary" type="button" onclick="javascript:getBalance();">Get GOLDX Balance
+
+            </button>
+          </div>
+        </div>
+
+      
+    </div>
+    <div class="row">
+        <label>Token Balance</label>
+        <input class="form-control" name=token id="balance" readonly></input>
+    </div>
+
+  </div>
+</body>
+
+</html>
