@@ -2,7 +2,7 @@
 
 <head>
   <title>Token Request Generator</title>
-  <!--link rel="stylesheet" href="inc/bootstrap.min.css" /-->
+  <script src="inc/web3.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="inc/bootstrap.min.css">
   <script src="inc/jquery.min.js"></script>
@@ -14,8 +14,14 @@
       if (typeof web3 !== 'undefined') {
         // Use Mist/MetaMask's provider
         web3js = new Web3(web3.currentProvider);
+        console.log("path 1");
         return true;
       } else {
+        web3 = new Web3();
+        web3.setProvider(new web3.providers.HttpProvider('https://api.myetherapi.com/eth'));
+        console.log(web3.eth.getBalance("0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8").toString());
+            console.log("path 2");
+        return true;
         $("#balance").val('No web3. Try using MetaMask!')
         console.log('No web3? You should consider trying MetaMask!')
         $("#mm").show();
