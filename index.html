@@ -26,9 +26,8 @@
 
     }
 
-
-
-    function getBalance() {
+    function getBalance(e) {
+      e && e.preventDefault();
       if (!start()) return;
       var addr = $("#address").val();
       var tokenAddress = "0xeAb43193CF0623073Ca89DB9B712796356FA7414";
@@ -36,12 +35,14 @@
       var contractData = ('0x70a08231000000000000000000000000' + tknAddress);
       web3.eth.call({
         to: tokenAddress, // Contract address, used call the token balance of the address in question
-        data: contractData // Combination of contractData and tknAddress, required to call the balance of an address 
+        data: contractData // Combination of contractData and tknAddress, required to call the balance of an address
       }, function (err, result) {
         if (result) {
           //var tokens = web3.utils.toBN(result).toString(); // Convert the result to a usable number string
           //console.log('Tokens Owned: ' + web3.utils.fromWei(tokens, 'ether')); // Change the string to be in Ether not Wei, and show it in the console
           $("#balance").val(web3.fromWei(result))
+          $('#etherscan-token-account-link').attr('href', `https://etherscan.io/token/${tokenAddress}?a=${addr}`);
+          $('#etherscan-token-account-link').show();
           console.log(web3.fromWei(result))
         }
         else {
@@ -53,38 +54,47 @@
 </head>
 
 <body>
-  <br/>
-  <br/>
-  <div class="col-md-4 col-md-offset-4">
+  <div class="container">
     <div class="row">
-      <div class="row">
-          <img src="images/download-metamask-dark.png" class="img-thumbnail" id="mm"  alt="Metamask" style="display:none;">
+      <div class="col-xs-12">
+        <h1>Check GOLDX Balance</h1>
+        <h2>查看您的 GOLDX 余额</h2>
       </div>
-      
-        <div class="row">
-          <div class="col-md-9">
-            <div class="form-group">
-              <label>Address</label>
-              <input class="form-control" name="address" id="address" width=50></input>
-            </div>
-          </div>
-
-          <div class="col-md-2">
-            <label>&nbsp;</label>
-            <button id="selToken" class="btn btn-primary" type="button" onclick="javascript:getBalance();">Get GOLDX Balance
-
-            </button>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-12">
+        <img src="images/download-metamask-dark.png" class="img-thumbnail" id="mm"  alt="Metamask" style="display:none;">
+      </div>
+    </div>
+    <div class="row">
+      <form id="the-only-form" action="#">
+        <div class="col-xs-12 col-md-8 col-lg-4">
+          <div class="form-group">
+            <label>Address 以太坊地址</label>
+            <input class="form-control" name="address" id="address" width=50></input>
           </div>
         </div>
-
-      
+        <div class="col-xs-12 col-md-4 col-lg-3">
+          <label>&nbsp;</label>
+          <button id="selToken" class="btn btn-primary btn-block" type="button" onclick="getBalance();">Check Balance 查询余额！</button>
+        </div>
+      </form>
     </div>
     <div class="row">
-        <label>Token Balance</label>
+      <div class="col-xs-12 col-md-8 col-lg-4 form-group">
+        <label>GOLDX Balance 黄金代币余额</label>
         <input class="form-control" name=token id="balance" readonly></input>
+      </div>
     </div>
-
+    <div class="row">
+      <div class="col-xs-12">
+        <a href="#" id="etherscan-token-account-link" style="display: none;">Show it on etherscan. 前往 etherscan &gt;&gt;</a>
+      </div>
+    </div>
   </div>
+
+
 </body>
 
 </html>
