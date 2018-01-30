@@ -14,20 +14,11 @@
       if (typeof web3 !== 'undefined') {
         // Use Mist/MetaMask's provider
         web3js = new Web3(web3.currentProvider);
-        console.log("path 1");
         return true;
       } else {
         web3 = new Web3();
         web3.setProvider(new web3.providers.HttpProvider('https://api.myetherapi.com/eth'));
-        console.log(web3.eth.getBalance("0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8").toString());
-            console.log("path 2");
         return true;
-        $("#balance").val('No web3. Try using MetaMask!')
-        console.log('No web3? You should consider trying MetaMask!')
-        $("#mm").show();
-        return false;
-        // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-        web3js = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io"));
       }
 
       // Now you can start your app & access web3 freely:
