@@ -9,18 +9,35 @@
   <script src="inc/bootstrap.min.js"></script>
   <script>
     function start() {
+      if (window.ethereum) {
+            window.web3 = new Web3(ethereum);
+           
+                // Request account access if needed
+                ethereum.enable( function(error) {
+                  console.log("Denied")
+                  return false;
+                });
+                // Acccounts now exposed
+                
+         
+              return true;
+                // User denied account access...
+       
+        }
 
       // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-      if (typeof web3 !== 'undefined') {
-        // Use Mist/MetaMask's provider
-        web3js = new Web3(web3.currentProvider);
-        return true;
-      } else {
-        web3 = new Web3();
-        web3.setProvider(new web3.providers.HttpProvider('https://api.myetherwallet.com/eth'));
-        return true;
-      }
+      // if (typeof web3 !== 'undefined') {
+      //   // Use Mist/MetaMask's provider
+      //   web3js = new Web3(web3.currentProvider);
+      //   return true;
+      // } else {
+      //   web3 = new Web3();
+      //   web3.setProvider(new web3.providers.HttpProvider('https://api.myetherwallet.com/eth'));
+      //   return true;
+      // }
 
+
+ 
       // Now you can start your app & access web3 freely:
       //startApp()
 
